@@ -1,6 +1,6 @@
 import express from 'express';
 import { body } from 'express-validator';
-import { createPost, getPosts, getPostById } from '../controllers/post.js';
+import { createPost, getPosts, getPostById, updatePost, deletePost } from '../controllers/post.js';
 import { upload } from '../middlewares/upload.js';
 import { validateRequest } from '../middlewares/validateRequest.js';
 
@@ -25,6 +25,22 @@ router.post(
     ],
     validateRequest,
     createPost
+);
+
+router.put(
+    '/post/:id', 
+    upload.single('image'),
+    [
+        body('title').not().isEmpty().withMessage('Title is required'),
+        body('body').not().isEmpty().withMessage('Body is required')
+    ],
+    validateRequest,
+    updatePost
+);
+
+router.delete(
+    '/post/:id', 
+    deletePost
 );
 
 export default router;
